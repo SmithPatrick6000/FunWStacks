@@ -169,9 +169,12 @@ public class MolecularMass
                     int p = 1;
                     if(i + 1 < olength){
                         if(operands.charAt(i+1) >= 'a' && operands.charAt(i+1) <= 'z'){
-                            while((i+p) < length && operands.charAt(i+p) >= 'a' && operands.charAt(i+p) <= 'z'){
-                                fullSymb.append(operands.charAt(i+p)); 
+                            while((i+p) < olength){
+                                if(operands.charAt(i+p) >= 'a' && operands.charAt(i+p) <= 'z'){
+                                    fullSymb.append(operands.charAt(i+p)); 
+                                }
                                 p++;
+                                
                             }
                         
                         }
@@ -199,7 +202,7 @@ public class MolecularMass
                 }
 
             }
-            //Lovercase through goes here
+            //Lowercase through goes here
         }
     }
 
