@@ -52,16 +52,16 @@ public class MolecularMass
     public static void turnPost(int length, StringBuilder operands, IntStack stack, String m){
         for(int i = 0; i < length;i++){
             
-            if(!(m.charAt(i) > 96 && m.charAt(i) < 123)){
+            if(!(m.charAt(i) >= 'a' && m.charAt(i) <= 'z')){
                 //Letter
-                if(m.charAt(i) > 64){
+                if(m.charAt(i) >= 'A'){
                     operands.append(m.charAt(i));
                     
                     if((i+1) < length){
                         
-                        if(m.charAt(i+1) > 96 && m.charAt(i+1) < 123){
+                        if(m.charAt(i+1) >= 'a' && m.charAt(i+1) <= 'z'){
                             int p = 1;
-                            while((p + i) < length && m.charAt(i+p) > 96 && m.charAt(i+p) < 123){
+                            while((p + i) < length && m.charAt(i+p) >= 'a' && m.charAt(i+p) <= 'z'){
                                 operands.append(m.charAt(i+p));
                                 p++;
                                 
@@ -72,11 +72,11 @@ public class MolecularMass
                     plusMult(i,length,operands,stack, m);
                 }
                 //Left parenthesis
-                else if(m.charAt(i) == 40){
+                else if(m.charAt(i) == '('){
                     stack.push('(');   
                 }
                 //right parenthesis
-                else if(m.charAt(i) == 41){
+                else if(m.charAt(i) == ')'){
                     while(stack.peek() != '('){
                         int temp = stack.pop();
                         if(temp == '+'){
@@ -93,9 +93,8 @@ public class MolecularMass
                     operands.append(m.charAt(i));
                     plusMult(i,length,operands,stack, m);
                 } 
-            }else{
-                System.out.println("Lowercase got through");
             }
+            //Lowercase through goes here
 
         }
 
@@ -104,7 +103,7 @@ public class MolecularMass
             if(stack.peek() == '*'){
                 operands.append('*');
                 
-            }else if(!(stack.peek() > 96 && stack.peek() < 123)){
+            }else if(!(stack.peek() >= 'a' && stack.peek() <= 'z')){
                 operands.append('+');
             }
             stack.pop();
@@ -113,21 +112,20 @@ public class MolecularMass
 
     //Adds a plus symbol after each element so it works in postfix
     public static void plusMult(int i,int length,StringBuilder operands,IntStack stack, String m){
-        if(i + 1 < length && m.charAt(i+1) != 41 && m.charAt(i+1) < 'a'){
-                   
-            if(m.charAt(i+1) > 64 || m.charAt(i+1) < 47){
+        System.out.println("Operand entering plusMult: " + operands);
+        if(i + 1 < length && m.charAt(i+1) != ')' && m.charAt(i+1) < 'a'){
+            
+            if(m.charAt(i+1) > '9' || m.charAt(i+1) < '0'){
                         
                 if((stack.peek() == '+' || stack.peek() == '*')&& stack.peek() != '(' && stack.peek() != ')'){
                     int temp = stack.pop();
                     if(temp == '+'){
-                        System.out.println("Added plus with plusMult mini if");
                         operands.append('+');
                     }else{
                         operands.append('*');
                     }
                 }
-                
-                System.out.println("Added plus with plusMult first if");     
+                     
                 stack.push('+');
             }else{
                         
@@ -145,8 +143,10 @@ public class MolecularMass
                 stack.push('*');
                         
             }
+
+            System.out.println("Code actually ran in plusMult");
         }
-        
+        System.out.println("Operand leaving plusMult: " + operands);
     }
 
     //Takes the posfix expression and solves the Equation
@@ -156,14 +156,14 @@ public class MolecularMass
         int op2 = 0;
         
         for(int i = 0; i < olength; i++){
-            if(!(operands.charAt(i) > 96 && operands.charAt(i) < 123)){
+            if(!(operands.charAt(i) >= 'a' && operands.charAt(i) <= 'z')){
 
-                if(operands.charAt(i) > 64 && operands.charAt(i) < 91){
+                if(operands.charAt(i) >= 'A' && operands.charAt(i) <= 'Z'){
                     StringBuilder fullSymb = new StringBuilder();
                     fullSymb.append(operands.charAt(i));
                     int p = 1;
                     if(i + 1 < olength){
-                        if(operands.charAt(i+1) > 96 && operands.charAt(i+1) < 123){
+                        if(operands.charAt(i+1) >= 'a' && operands.charAt(i+1) <= 'z'){
                             while((i+p) < length && operands.charAt(i+p) > 96 && operands.charAt(i+p) < 123){
                                 fullSymb.append(operands.charAt(i+p)); 
                                 p++;
@@ -190,12 +190,11 @@ public class MolecularMass
                     op1 = op1 + op2;
                     stack.push(op1);
                 }else{
-                    stack.push(operands.charAt(i)-48);
+                    stack.push(operands.charAt(i)-'0');
                 }
 
-            }else{
-                System.out.println("Lowercase got through");
             }
+            //Lovercase through goes here
         }
     }
 
