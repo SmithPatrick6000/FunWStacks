@@ -1,3 +1,4 @@
+package src.main.java;
 public class Element {
     private int id_number;
     private String symbol;

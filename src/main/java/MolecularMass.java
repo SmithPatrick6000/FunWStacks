@@ -1,3 +1,4 @@
+package src.main.java;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -22,7 +23,7 @@ public class MolecularMass
     public static final int NAME_LOC = 2;
     public static final int MASS_LOC =3;
     
-    public static String elementFile = "Elements.csv";
+    public static String elementFile = "resources/Elements.csv";
 
     
     public static void main(String[] args)
@@ -163,8 +164,8 @@ public class MolecularMass
      */
     public static void parseFix(int length, StringBuilder operands, IntStack stack){
         int olength = operands.length();
-        int op1 = 0;
-        int op2 = 0;
+        int op1;
+        int op2;
         
         for(int i = 0; i < olength; i++){
             if(!(operands.charAt(i) >= 'a' && operands.charAt(i) <= 'z')){
@@ -221,8 +222,8 @@ public class MolecularMass
      * @throws IOException  
      */
     public static int findChar(String symbol) throws IOException{
-        FileReader fr = null;
-        BufferedReader br = null;
+        FileReader fr;
+        BufferedReader br;
         fr = new FileReader(elementFile);
         br = new BufferedReader(fr);
         System.out.println("Symbol entering findChar: " + symbol);
