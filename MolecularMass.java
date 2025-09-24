@@ -3,7 +3,13 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-
+/*
+ * Future additions:
+ *                  - Make it so Elements can be multiplied by greater than 9
+ *                  - Change Element mass from int to double for better accuracy
+ *                      * Need to change IntStack to DoubleStack
+ *                  - Organize file layout
+ */
 public class MolecularMass
 { 
     
