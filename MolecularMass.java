@@ -55,6 +55,7 @@ public class MolecularMass
             if(!(m.charAt(i) >= 'a' && m.charAt(i) <= 'z')){
                 //Letter
                 if(m.charAt(i) >= 'A'){
+                    int offset = i;
                     operands.append(m.charAt(i));
                     
                     if((i+1) < length){
@@ -64,12 +65,12 @@ public class MolecularMass
                             while((p + i) < length && m.charAt(i+p) >= 'a' && m.charAt(i+p) <= 'z'){
                                 operands.append(m.charAt(i+p));
                                 p++;
-                                
                             }
 
+                            offset = i+p -1;
                         }
                     }
-                    plusMult(i,length,operands,stack, m);
+                    plusMult(offset,length,operands,stack, m);
                 }
                 //Left parenthesis
                 else if(m.charAt(i) == '('){
@@ -92,7 +93,7 @@ public class MolecularMass
                 else{
                     operands.append(m.charAt(i));
                     plusMult(i,length,operands,stack, m);
-                } 
+                }
             }
             //Lowercase through goes here
 
@@ -110,13 +111,18 @@ public class MolecularMass
         }
     }
 
-    //Adds a plus symbol after each element so it works in postfix
+    //Appends operators onto operands if they are in the stack
     public static void plusMult(int i,int length,StringBuilder operands,IntStack stack, String m){
         System.out.println("Operand entering plusMult: " + operands);
-        if(i + 1 < length && m.charAt(i+1) != ')' && m.charAt(i+1) < 'a'){
+        System.out.println("Top of stack entering plusMult: " + stack.peek());
             
+        for(int v = i; v < length; v++){
+                System.out.println("Char at m: " + v + ": " + m.charAt(v));
+        }
+        if((i + 1 < length && m.charAt(i+1) != ')')){
+            
+            System.out.println("plusMult if ran");
             if(m.charAt(i+1) > '9' || m.charAt(i+1) < '0'){
-                        
                 if((stack.peek() == '+' || stack.peek() == '*')&& stack.peek() != '(' && stack.peek() != ')'){
                     int temp = stack.pop();
                     if(temp == '+'){
@@ -138,8 +144,7 @@ public class MolecularMass
                         operands.append('*');
                     }
                 }
-                       
-                       
+                         
                 stack.push('*');
                         
             }
@@ -164,7 +169,7 @@ public class MolecularMass
                     int p = 1;
                     if(i + 1 < olength){
                         if(operands.charAt(i+1) >= 'a' && operands.charAt(i+1) <= 'z'){
-                            while((i+p) < length && operands.charAt(i+p) > 96 && operands.charAt(i+p) < 123){
+                            while((i+p) < length && operands.charAt(i+p) >= 'a' && operands.charAt(i+p) <= 'z'){
                                 fullSymb.append(operands.charAt(i+p)); 
                                 p++;
                             }
