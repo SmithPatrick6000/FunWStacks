@@ -38,7 +38,6 @@ public class MolecularMass
         //Turns input into postfix
         turnPost(length, operands, stack, m);
 
-        //Shows the postfix
         System.out.println("turnPost result: " + operands);
 
         //Takes the posfix expression and solves the Equation
@@ -113,15 +112,8 @@ public class MolecularMass
 
     //Appends operators onto operands if they are in the stack
     public static void plusMult(int i,int length,StringBuilder operands,IntStack stack, String m){
-        System.out.println("Operand entering plusMult: " + operands);
-        System.out.println("Top of stack entering plusMult: " + stack.peek());
-            
-        for(int v = i; v < length; v++){
-                System.out.println("Char at m: " + v + ": " + m.charAt(v));
-        }
         if((i + 1 < length && m.charAt(i+1) != ')')){
-            
-            System.out.println("plusMult if ran");
+
             if(m.charAt(i+1) > '9' || m.charAt(i+1) < '0'){
                 if((stack.peek() == '+' || stack.peek() == '*')&& stack.peek() != '(' && stack.peek() != ')'){
                     int temp = stack.pop();
@@ -138,7 +130,6 @@ public class MolecularMass
                 if(stack.peek() == '*' && stack.peek() != '(' && stack.peek() != ')'){
                     int temp = stack.pop();
                     if(temp == '+'){
-                        System.out.println("PushedLetter plus");
                         operands.append('+');
                     }else{
                         operands.append('*');
@@ -149,9 +140,7 @@ public class MolecularMass
                         
             }
 
-            System.out.println("Code actually ran in plusMult");
         }
-        System.out.println("Operand leaving plusMult: " + operands);
     }
 
     //Takes the posfix expression and solves the Equation
@@ -162,21 +151,23 @@ public class MolecularMass
         
         for(int i = 0; i < olength; i++){
             if(!(operands.charAt(i) >= 'a' && operands.charAt(i) <= 'z')){
-
+                //Converts Elemental Symbols to their Mass
                 if(operands.charAt(i) >= 'A' && operands.charAt(i) <= 'Z'){
                     StringBuilder fullSymb = new StringBuilder();
                     fullSymb.append(operands.charAt(i));
                     int p = 1;
                     if(i + 1 < olength){
                         if(operands.charAt(i+1) >= 'a' && operands.charAt(i+1) <= 'z'){
-                            while((i+p) < olength){
+                            boolean newCapital = false;
+                            while((i+p) < olength && !newCapital){  
                                 if(operands.charAt(i+p) >= 'a' && operands.charAt(i+p) <= 'z'){
                                     fullSymb.append(operands.charAt(i+p)); 
                                 }
+                                if(operands.charAt(i+p) < 'a'){
+                                    newCapital = true;
+                                }
                                 p++;
-                                
                             }
-                        
                         }
                     }
                     int pushElem = 0;
@@ -186,7 +177,7 @@ public class MolecularMass
                         System.out.println("IOException: "+ e.getMessage());
                     }
                     stack.push(pushElem);
-                    
+
                 }else if(operands.charAt(i) == '*'){
                     op2 = stack.pop();
                     op1 = stack.pop();
@@ -206,13 +197,13 @@ public class MolecularMass
         }
     }
 
-    //Finds the Corresponding elemental symbal and outputs the mass
+    //Finds the Corresponding elemental symbol and outputs the mass
     public static int findChar(String symbol) throws IOException{
         FileReader fr = null;
         BufferedReader br = null;
         fr = new FileReader(elementFile);
         br = new BufferedReader(fr);
-        
+        System.out.println("Symbol entering findChar: " + symbol);
         
         String line;
        
