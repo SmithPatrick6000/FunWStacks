@@ -31,16 +31,28 @@ public class MolecularMass
     //Calculates the weight of a chemical formula
     public static int calculate(String m)
     {
-        
         IntStack stack = new IntStack();
         StringBuilder operands = new StringBuilder();
-
         int length = m.length();
+
         //Turns input into postfix
+        turnPost(length, operands, stack, m);
+
+        //Shows the postfix
+        System.out.println("turnPost result: " + operands);
+
+        //Takes the posfix expression and solves the Equation
+        parseFix(length, operands, stack);
+        
+
+        return stack.pop();
+    }
+
+    //Turns chemical formula into postfix notation
+    public static void turnPost(int length, StringBuilder operands, IntStack stack, String m){
         for(int i = 0; i < length;i++){
             
             if(!(m.charAt(i) > 96 && m.charAt(i) < 123)){
-                System.out.println("Uppercase got through");
                 //Letter
                 if(m.charAt(i) > 64){
                     operands.append(m.charAt(i));
@@ -86,21 +98,63 @@ public class MolecularMass
             }
 
         }
+
+        //Pops the stack until it is empty adding the remaining operators are added 
         while(stack.peek() != -1){
-            if(stack.peek() == 42){
+            if(stack.peek() == '*'){
                 operands.append('*');
                 
-            }else{
+            }else if(!(stack.peek() > 96 && stack.peek() < 123)){
                 operands.append('+');
             }
             stack.pop();
         }
+    }
 
-        //Takes the posfix expression and solves the Equation
+    //Adds a plus symbol after each element so it works in postfix
+    public static void plusMult(int i,int length,StringBuilder operands,IntStack stack, String m){
+        if(i + 1 < length && m.charAt(i+1) != 41 && m.charAt(i+1) < 'a'){
+                   
+            if(m.charAt(i+1) > 64 || m.charAt(i+1) < 47){
+                        
+                if((stack.peek() == '+' || stack.peek() == '*')&& stack.peek() != '(' && stack.peek() != ')'){
+                    int temp = stack.pop();
+                    if(temp == '+'){
+                        System.out.println("Added plus with plusMult mini if");
+                        operands.append('+');
+                    }else{
+                        operands.append('*');
+                    }
+                }
+                
+                System.out.println("Added plus with plusMult first if");     
+                stack.push('+');
+            }else{
+                        
+                if(stack.peek() == '*' && stack.peek() != '(' && stack.peek() != ')'){
+                    int temp = stack.pop();
+                    if(temp == '+'){
+                        System.out.println("PushedLetter plus");
+                        operands.append('+');
+                    }else{
+                        operands.append('*');
+                    }
+                }
+                       
+                       
+                stack.push('*');
+                        
+            }
+        }
+        
+    }
+
+    //Takes the posfix expression and solves the Equation
+    public static void parseFix(int length, StringBuilder operands, IntStack stack){
         int olength = operands.length();
         int op1 = 0;
         int op2 = 0;
-        System.out.println(operands);
+        
         for(int i = 0; i < olength; i++){
             if(!(operands.charAt(i) > 96 && operands.charAt(i) < 123)){
 
@@ -143,44 +197,6 @@ public class MolecularMass
                 System.out.println("Lowercase got through");
             }
         }
-        
-        
-        return stack.pop();
-    }
-
-    //Adds a plus symbol after each element so it works in postfix
-    public static void plusMult(int i,int length,StringBuilder operands,IntStack stack, String m){
-        if(i + 1 < length && m.charAt(i+1) != 41){
-                   
-            if(m.charAt(i+1) > 64 || m.charAt(i+1) < 47){
-                        
-                if((stack.peek() == '+' || stack.peek() == '*')&& stack.peek() != '(' && stack.peek() != ')'){
-                    int temp = stack.pop();
-                    if(temp == '+'){
-                        operands.append('+');
-                    }else{
-                        operands.append('*');
-                    }
-                }
-                         
-                stack.push('+');
-            }else{
-                        
-                if(stack.peek() == '*' && stack.peek() != '(' && stack.peek() != ')'){
-                    int temp = stack.pop();
-                    if(temp == '+'){
-                        System.out.println("PushedLetter plus");
-                        operands.append('+');
-                    }else{
-                        operands.append('*');
-                    }
-                }
-                       
-                       
-                stack.push('*');
-                        
-            }
-        }
     }
 
     //Finds the Corresponding elemental symbal and outputs the mass
@@ -208,7 +224,8 @@ public class MolecularMass
         if(mass == 0){
             System.out.println("Symbol does not equal Character");
         }
-        System.out.println(mass);
+        
+        System.out.println("Mass leaving findChar: " + mass);
         return mass;
     } 
 
