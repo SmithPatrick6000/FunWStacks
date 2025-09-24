@@ -28,44 +28,50 @@ public class MolecularMass
         kb.close();
     }
    
-    //Calculates the weight of a chemical formula
+    /**
+     * Calculates the mass of chemical formula
+     * 
+     * @param m     The chemical formula 
+     * @return      The Mass of the chemical formula
+     */
     public static int calculate(String m)
     {
         IntStack stack = new IntStack();
         StringBuilder operands = new StringBuilder();
         int length = m.length();
 
-        //Turns input into postfix
         turnPost(length, operands, stack, m);
 
         System.out.println("turnPost result: " + operands);
 
-        //Takes the posfix expression and solves the Equation
         parseFix(length, operands, stack);
         
 
         return stack.pop();
     }
 
-    //Turns chemical formula into postfix notation
+    /**
+     * Converts the chemical formula into postfix notation
+     * 
+     * @param length    The length of the chemical formula
+     * @param operands  The String used to hold the chemical formula in postfix notation
+     * @param stack     The stack used to hold operators
+     * @param m         The chemical formula
+     */
     public static void turnPost(int length, StringBuilder operands, IntStack stack, String m){
         for(int i = 0; i < length;i++){
-            
             if(!(m.charAt(i) >= 'a' && m.charAt(i) <= 'z')){
                 //Letter
                 if(m.charAt(i) >= 'A'){
                     int offset = i;
                     operands.append(m.charAt(i));
-                    
                     if((i+1) < length){
-                        
                         if(m.charAt(i+1) >= 'a' && m.charAt(i+1) <= 'z'){
                             int p = 1;
                             while((p + i) < length && m.charAt(i+p) >= 'a' && m.charAt(i+p) <= 'z'){
                                 operands.append(m.charAt(i+p));
                                 p++;
                             }
-
                             offset = i+p -1;
                         }
                     }
@@ -94,10 +100,7 @@ public class MolecularMass
                     plusMult(i,length,operands,stack, m);
                 }
             }
-            //Lowercase through goes here
-
         }
-
         //Pops the stack until it is empty adding the remaining operators are added 
         while(stack.peek() != -1){
             if(stack.peek() == '*'){
@@ -110,10 +113,17 @@ public class MolecularMass
         }
     }
 
-    //Appends operators onto operands if they are in the stack
+    /**
+     * Decides when to add + or * into operands to make accurate postfix notation
+     * 
+     * @param i         The location inside of m that turnPost has reached
+     * @param length    The length of the chemical formula
+     * @param operands  The String used to hold the chemical formula in postfix notation
+     * @param stack     The stack used to hold operators
+     * @param m         The chemical formula
+     */
     public static void plusMult(int i,int length,StringBuilder operands,IntStack stack, String m){
         if((i + 1 < length && m.charAt(i+1) != ')')){
-
             if(m.charAt(i+1) > '9' || m.charAt(i+1) < '0'){
                 if((stack.peek() == '+' || stack.peek() == '*')&& stack.peek() != '(' && stack.peek() != ')'){
                     int temp = stack.pop();
@@ -122,11 +132,9 @@ public class MolecularMass
                     }else{
                         operands.append('*');
                     }
-                }
-                     
+                }   
                 stack.push('+');
-            }else{
-                        
+            }else{       
                 if(stack.peek() == '*' && stack.peek() != '(' && stack.peek() != ')'){
                     int temp = stack.pop();
                     if(temp == '+'){
@@ -134,16 +142,19 @@ public class MolecularMass
                     }else{
                         operands.append('*');
                     }
-                }
-                         
-                stack.push('*');
-                        
+                }        
+                stack.push('*');   
             }
-
         }
     }
 
-    //Takes the posfix expression and solves the Equation
+    /**
+     * Finds solution to postfix expressions
+     * 
+     * @param length    The length of the chemical formula
+     * @param operands  The String used to hold the chemical formula in postfix notation
+     * @param stack     The stack used to evaluate postfix notation
+     */
     public static void parseFix(int length, StringBuilder operands, IntStack stack){
         int olength = operands.length();
         int op1 = 0;
@@ -193,11 +204,16 @@ public class MolecularMass
                 }
 
             }
-            //Lowercase through goes here
         }
     }
 
-    //Finds the Corresponding elemental symbol and outputs the mass
+    /**
+     * Takes an elemental symbol and finds its corresponding mass
+     * 
+     * @param symbol        The elemental Symbol
+     * @return              The mass of the element
+     * @throws IOException  
+     */
     public static int findChar(String symbol) throws IOException{
         FileReader fr = null;
         BufferedReader br = null;
@@ -212,10 +228,8 @@ public class MolecularMass
             String[] partition = line.split(DELIMITER);
             
             if(partition[SYMBOL_LOC].equals(symbol)){
-
                 mass = (int)Math.round(Double.parseDouble(partition[MASS_LOC]));
             }
-
         }
 
         br.close();

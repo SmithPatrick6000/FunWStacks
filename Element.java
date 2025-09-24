@@ -4,7 +4,14 @@ public class Element {
     private String name;
     private int mass;
 
-//Still have variables for number and name for potential future uses in data set
+    /**
+     * Initializes the class Element
+     * 
+     * @param id_number     The number of the element on the periodic table
+     * @param symbol        The symbol of the element
+     * @param name          The name of the element
+     * @param mass          The mass of the element
+     */
     public Element(int id_number, String symbol, String name, int mass){
         this.id_number = id_number;
         this.symbol = symbol;
