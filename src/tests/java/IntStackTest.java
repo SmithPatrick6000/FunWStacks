@@ -17,7 +17,7 @@ public class IntStackTest{
     }
 	
 	@Test
-	public void FILO() {
+	public void testFILO() {
 		stack.push(1);
         stack.push(2);
         stack.push(3);
@@ -42,5 +42,7 @@ public class IntStackTest{
     	int stackPeek = stack.peek();
     	assertEquals(stackPeek, stack.pop());
     }
+    
+
 
 }

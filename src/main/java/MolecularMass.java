@@ -49,8 +49,6 @@ public class MolecularMass
 
         turnPost(length, operands, stack, m);
 
-        System.out.println("turnPost result: " + operands);
-
         parseFix(length, operands, stack);
         
 
@@ -226,7 +224,6 @@ public class MolecularMass
         BufferedReader br;
         fr = new FileReader(elementFile);
         br = new BufferedReader(fr);
-        System.out.println("Symbol entering findChar: " + symbol);
         
         String line;
        
@@ -244,7 +241,6 @@ public class MolecularMass
             System.out.println("Symbol does not equal Character");
         }
         
-        System.out.println("Mass leaving findChar: " + mass);
         return mass;
     } 
 
