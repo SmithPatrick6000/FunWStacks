@@ -1,5 +1,6 @@
 
 
+
 public class IntStack
 {
 	// declare your private fields here

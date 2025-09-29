@@ -1,0 +1,18 @@
+
+
+#For Eclipse
+.classpath
+.project
+.settings/
+
+#For Maven
+log/
+target/
+
+#Compiled stuff
+*.class
+bin/
+/target/
+
+*.jar
+
