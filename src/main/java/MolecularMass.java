@@ -1,4 +1,4 @@
-package src.main.java;
+
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -231,7 +231,7 @@ public class MolecularMass
         String line;
        
         int mass = 0;
-        while((line = br.readLine()) != null){
+        while((line = br.readLine()) != null && mass == 0){
             String[] partition = line.split(DELIMITER);
             
             if(partition[SYMBOL_LOC].equals(symbol)){
