@@ -102,7 +102,12 @@ public class MolecularMass
                 //number
                 else{
                     operands.append(m.charAt(i));
-                    plusMult(i,length,operands,stack, m);
+                    if(i + 1 < length) {
+                    	if(!(m.charAt(i + 1) >= '0' && m.charAt(i+1) <= '9')) {
+                    		plusMult(i,length,operands,stack, m);
+                    	}
+                    }
+                    
                 }
             }
         }
@@ -164,6 +169,8 @@ public class MolecularMass
         int olength = operands.length();
         int op1;
         int op2;
+        double fullMult = 0;
+        double numCount = 0;
         
         for(int i = 0; i < olength; i++){
             if(!(operands.charAt(i) >= 'a' && operands.charAt(i) <= 'z')){
@@ -205,7 +212,25 @@ public class MolecularMass
                     op1 = op1 + op2;
                     stack.push(op1);
                 }else{
-                    stack.push(operands.charAt(i)-'0');
+                	
+                	
+                	stack.push(operands.charAt(i) - '0');
+                	
+                	if(olength > i + 1) {
+                		if(operands.charAt(i+1) >= '0' && operands.charAt(i+1) <= '9') {
+                			numCount++;
+                		}else {
+                			for(int p = 0; p < numCount +1; p++) {
+                				fullMult = fullMult + stack.pop() * Math.pow(10, p);
+                				
+                			}
+                    		stack.push((int)fullMult);
+                    		numCount = 0;
+                    		fullMult = 0;
+                    	}
+                        
+                		
+                	}
                 }
 
             }
