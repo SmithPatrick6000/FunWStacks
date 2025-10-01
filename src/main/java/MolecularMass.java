@@ -41,9 +41,9 @@ public class MolecularMass
      * @param m     The chemical formula 
      * @return      The Mass of the chemical formula
      */
-    public static int calculate(String m)
+    public static double calculate(String m)
     {
-        IntStack stack = new IntStack();
+        DoubleStack stack = new DoubleStack();
         StringBuilder operands = new StringBuilder();
         int length = m.length();
 
@@ -63,7 +63,7 @@ public class MolecularMass
      * @param stack     The stack used to hold operators
      * @param m         The chemical formula
      */
-    public static void turnPost(int length, StringBuilder operands, IntStack stack, String m){
+    public static void turnPost(int length, StringBuilder operands, DoubleStack stack, String m){
         for(int i = 0; i < length;i++){
             if(!(m.charAt(i) >= 'a' && m.charAt(i) <= 'z')){
                 //Letter
@@ -89,7 +89,7 @@ public class MolecularMass
                 //right parenthesis
                 else if(m.charAt(i) == ')'){
                     while(stack.peek() != '('){
-                        int temp = stack.pop();
+                        double temp = stack.pop();
                         if(temp == '+'){
                             operands.append('+');
                         }else{
@@ -132,11 +132,11 @@ public class MolecularMass
      * @param stack     The stack used to hold operators
      * @param m         The chemical formula
      */
-    public static void plusMult(int i,int length,StringBuilder operands,IntStack stack, String m){
+    public static void plusMult(int i,int length,StringBuilder operands,DoubleStack stack, String m){
         if((i + 1 < length && m.charAt(i+1) != ')')){
             if(m.charAt(i+1) > '9' || m.charAt(i+1) < '0'){
                 if((stack.peek() == '+' || stack.peek() == '*')&& stack.peek() != '(' && stack.peek() != ')'){
-                    int temp = stack.pop();
+                    double temp = stack.pop();
                     if(temp == '+'){
                         operands.append('+');
                     }else{
@@ -146,7 +146,7 @@ public class MolecularMass
                 stack.push('+');
             }else{       
                 if(stack.peek() == '*' && stack.peek() != '(' && stack.peek() != ')'){
-                    int temp = stack.pop();
+                    double temp = stack.pop();
                     if(temp == '+'){
                         operands.append('+');
                     }else{
@@ -165,10 +165,10 @@ public class MolecularMass
      * @param operands  The String used to hold the chemical formula in postfix notation
      * @param stack     The stack used to evaluate postfix notation
      */
-    public static void parseFix(int length, StringBuilder operands, IntStack stack){
+    public static void parseFix(int length, StringBuilder operands, DoubleStack stack){
         int olength = operands.length();
-        int op1;
-        int op2;
+        double op1;
+        double op2;
         double fullMult = 0;
         double numCount = 0;
         
@@ -193,7 +193,7 @@ public class MolecularMass
                             }
                         }
                     }
-                    int pushElem = 0;
+                    double pushElem = 0;
                     try{
                         pushElem = findChar(fullSymb.toString());
                     }catch(IOException e){
@@ -244,7 +244,7 @@ public class MolecularMass
      * @return              The mass of the element
      * @throws IOException  
      */
-    public static int findChar(String symbol) throws IOException{
+    public static double findChar(String symbol) throws IOException{
         FileReader fr;
         BufferedReader br;
         fr = new FileReader(elementFile);
@@ -252,12 +252,12 @@ public class MolecularMass
         
         String line;
        
-        int mass = 0;
+        double mass = 0;
         while((line = br.readLine()) != null && mass == 0){
             String[] partition = line.split(DELIMITER);
             
             if(partition[SYMBOL_LOC].equals(symbol)){
-                mass = (int)Math.round(Double.parseDouble(partition[MASS_LOC]));
+                mass = Double.parseDouble(partition[MASS_LOC]);
             }
         }
 
